@@ -85,13 +85,15 @@ namespace RestaurantServer.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Category>> PostCategory(CategoryDto categoryDto)
         {
-            _context.Categories.Add(new Category
+            var category = new Category
             {
                 CategoryName = categoryDto.CategoryName
-            });
+            };
+
+            _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCategory", new { id = categoryDto.Id }, categoryDto);
+            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
         }
 
         // DELETE: api/Categories/5
