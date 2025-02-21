@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestaurantServer.API.DataAccess.Context;
 using RestaurantServer.API.DataAccess.Entities;
@@ -53,6 +48,12 @@ namespace RestaurantServer.API.Controllers
                 return BadRequest();
             }
 
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var menu = new Menu
             {
                 Id = menuDto.Id,
@@ -89,6 +90,11 @@ namespace RestaurantServer.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Menu>> PostMenu(MenuDto menuDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var menu = new Menu
             {
                 Id = menuDto.Id,
@@ -96,7 +102,7 @@ namespace RestaurantServer.API.Controllers
                 Description = menuDto.Description,
                 Price = menuDto.Price,
                 CategoryId = menuDto.CategoryId,
-                ImageUrl= menuDto.ImageUrl
+                ImageUrl = menuDto.ImageUrl
             };
             _context.Menus.Add(menu);
             await _context.SaveChangesAsync();
